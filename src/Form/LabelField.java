@@ -11,6 +11,7 @@ public class LabelField extends JPanel {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         add(new JLabel(label));
         add(component);
+        setMaximumSize(new Dimension(300,30));
         Component = component;
     }
 
@@ -18,6 +19,7 @@ public class LabelField extends JPanel {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         add(new JLabel(label));
         add(component);
+        setMaximumSize(new Dimension(300,30));
         component.setPreferredSize(dim);
         Component = component;
     }

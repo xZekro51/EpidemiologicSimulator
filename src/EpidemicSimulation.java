@@ -15,6 +15,10 @@ public class EpidemicSimulation {
     public static int Resources;
     public static int PopulationSize;
     public static double SwabCost;
+    public static double Infectivity;
+    public static double SymptChance;
+    public static double Lethality;
+    public static int Duration;
 
     public static void main(String[] args) {
         //Population = new Population();
@@ -27,7 +31,6 @@ public class EpidemicSimulation {
                 window.Update();
                 window.UpdateValid(ValidInput(window),Resources);
             }
-
         }
     }
 
@@ -37,9 +40,22 @@ public class EpidemicSimulation {
             PopulationSize = Integer.parseInt(window.PopulationField.Value().toString());
             SwabCost = Double.parseDouble(window.SwabCostField.Value().toString());
             window.maxResourceValue = (int)(PopulationSize * SwabCost*10)-1;
-            window.CurrentPopulation.setText("Current Population: "+String.valueOf(PopulationSize) + " |");
-            window.CurrentResources.setText("Current Resources: "+String.valueOf(Resources));
-            window.CurrentSwabCost.setText("Current Swab Cost: "+String.valueOf(SwabCost) + " |");
+            Infectivity = Double.parseDouble(window.InfectivityField.Value().toString());
+            SymptChance = Double.parseDouble(window.SymptomaticChanceField.Value().toString());
+            Lethality = Double.parseDouble(window.LethalityField.Value().toString());
+            Duration = Integer.parseInt(window.DurationField.Value().toString());
+            //window.CurrentPopulation.setText("Current Population: "+String.valueOf(PopulationSize) + " |");
+            //window.CurrentResources.setText("Current Resources: "+String.valueOf(Resources));
+            //window.CurrentSwabCost.setText("Current Swab Cost: "+String.valueOf(SwabCost) + " |");
+            String population = "Current Population: "+String.valueOf(PopulationSize) + " | ";
+            String resources = "Current Resources: "+String.valueOf(Resources) + " | ";
+            String swabcost = "Current Swab Cost: "+String.valueOf(SwabCost) + " | ";
+            String infectivity = "Infectivity: "+String.valueOf(Infectivity) + " | ";
+            String symptChance = "Symptoms chance: "+String.valueOf(SymptChance) + " | ";
+            String lethality = "Lethality: "+String.valueOf(Lethality) + " | ";
+            String duration = "Duration: "+String.valueOf(Duration) + " | ";
+            String fullString = population + swabcost + resources + infectivity + symptChance + lethality + duration;
+            window.CurrentValues.setText(fullString);
             return true;
         }
         catch(Exception e){
