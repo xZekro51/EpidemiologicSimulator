@@ -8,7 +8,7 @@ public class Person {
 
     public HealthState Health = HealthState.GREEN;
 
-    public State CurrentState = State.STILL;
+    public State CurrentState = State.MOVING;
 
     public boolean IsSick = false;
 
