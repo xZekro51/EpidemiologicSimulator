@@ -1,10 +1,12 @@
+package SimulationInfo;
+
 public class Simulation {
 
     public boolean Running = false;
     public boolean RanOnce = false;
     public int ElapsedDays = 0;
-    public static Population Population;
-    public static Economy Economy;
+    public Population Population;
+    public Economy Economy;
     public static HealthCare HealthCareInstance;
 
     public int PopSize;
@@ -40,15 +42,15 @@ public class Simulation {
 
         float vd = (V/Population.Size) * Population.moving();
         System.out.println("Current Vd is " + String.valueOf(vd));
-        //Population.SimulateContagion(vd,Infectivity);
+        //Simulation.Population.SimulateContagion(vd,Infectivity);
         int curEnc = Population.Components.get(0).Encounters.size();
         Population.Components.stream().parallel().forEach((x)->Population.SimulateContagion(curEnc,x,vd,Infectivity));
-        //Population.UpdatePopulationHealthState(SymptChance,Lethality);
+        //Simulation.Population.UpdatePopulationHealthState(SymptChance,Lethality);
         Population.Components.stream().parallel().forEach((x)->Population.UpdatePopulationHealthState(x,SymptChance,Lethality));
         Economy.UpdateResources(Population);
         ElapsedDays++;
 
-        System.out.println(String.format("Simulation for day %s finalized.",String.valueOf(ElapsedDays)));
+        System.out.println(String.format("Simulation.Simulation for day %s finalized.",String.valueOf(ElapsedDays)));
         System.out.println("Is there any red? " + String.valueOf(Population.anyRed()));
         System.out.println("Asymptomatic: " + String.valueOf(Population.asymptomatic()));
         System.out.println("Dead Count: " + String.valueOf(Population.dead()));

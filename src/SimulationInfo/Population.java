@@ -1,9 +1,9 @@
+package SimulationInfo;
+
 import java.util.ArrayList;
-import java.sql.Array;
-import java.util.List;
 import java.util.Random;
 
-//Defining the Population with size, encounter rate and other values
+//Defining the Simulation.Population with size, encounter rate and other values
 public class Population{
 
     public ArrayList<Person> Components;
@@ -149,14 +149,14 @@ public class Population{
             Random r = new Random();
             int rIndex = r.nextInt(Components.size());
 
-            //Avoid the case where a Person meets by himself
+            //Avoid the case where a Simulation.Person meets by himself
             if (rIndex != Components.indexOf(p)) {
                 //Storing the met person in a variable to increase performance
                 Person metPerson = Components.get(rIndex);
                 //Avoiding the case where the metPerson is dead
                 if(metPerson.Health == HealthState.BLACK)
                     continue;
-                //In case a Person meets another, add both to the list of each other encounter
+                //In case a Simulation.Person meets another, add both to the list of each other encounter
                 //Keep in mind that people meeting 2 times is a possibility, so i'm still gonna consider it
                 p.Encounters.add(metPerson);
                 metPerson.Encounters.add(p);
@@ -192,14 +192,14 @@ public class Population{
                 Random r = new Random();
                 int rIndex = r.nextInt(Components.size());
 
-                //Avoid the case where a Person meets by himself
+                //Avoid the case where a Simulation.Person meets by himself
                 if (rIndex != Components.indexOf(p)) {
                     //Storing the met person in a variable to increase performance
                     Person metPerson = Components.get(rIndex);
                     //Avoiding the case where the metPerson is dead
                     if(metPerson.Health == HealthState.BLACK)
                         continue;
-                    //In case a Person meets another, add both to the list of each other encounter
+                    //In case a Simulation.Person meets another, add both to the list of each other encounter
                     //Keep in mind that people meeting 2 times is a possibility, so i'm still gonna consider it
                     p.Encounters.add(metPerson);
                     metPerson.Encounters.add(p);
@@ -228,6 +228,10 @@ public class Population{
     //Returns all the yellow
     public int asymptomatic(){
         return (int)Components.stream().parallel().filter((x)-> x.Health == HealthState.YELLOW).count();
+    }
+
+    public int sick(){
+        return (int)Components.stream().parallel().filter((x)-> x.IsSick == true).count();
     }
 
     public int dead(){

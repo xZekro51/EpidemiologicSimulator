@@ -1,3 +1,5 @@
+package SimulationInfo;
+
 import java.util.ArrayList;
 
 //Holds the specific information about a person in the population, like cost, if he's sick or sane and others.

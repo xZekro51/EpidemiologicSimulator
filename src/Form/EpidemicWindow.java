@@ -1,5 +1,7 @@
 package Form;
 
+import SimulationInfo.Outcomes;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +12,6 @@ public class EpidemicWindow extends JFrame {
     public JLabel validLabel;
 
     //parameters fields
-    public LabelField TestField;
     public LabelField ResourceField;
     public LabelField PopulationField;
     public LabelField SwabCostField;
@@ -27,7 +28,7 @@ public class EpidemicWindow extends JFrame {
 
     public JProgressBar AliveBar;
     public JProgressBar ResourcesBar;
-    //current values label
+    //Current values label
     public JLabel CurrentValues = new JLabel();
 
     public JOptionPane SimulationEnd = new JOptionPane();
@@ -79,7 +80,6 @@ public class EpidemicWindow extends JFrame {
         variableContainer.setPreferredSize(new Dimension(250,30));
         variableContainer.setSize(300,30);
         variableContainer.setMaximumSize(new Dimension(270,300));
-        //variableContainer.add(TestField);
         variableContainer.add(PopulationField);
         variableContainer.add(SwabCostField);
         variableContainer.add(ResourceField);
@@ -101,11 +101,11 @@ public class EpidemicWindow extends JFrame {
         RunSingleDay.setPreferredSize(new Dimension(200,30));
         RunSingleDay.setMaximumSize(new Dimension(200,40));
         RunSingleDay.setAlignmentX(0.5f);
-        RunSimulation = new JButton("Run Simulation");
+        RunSimulation = new JButton("Run Simulation.Simulation");
         RunSimulation.setPreferredSize(new Dimension(200,30));
         RunSimulation.setMaximumSize(new Dimension(200,40));
         RunSimulation.setAlignmentX(0.5f);
-        ResetSimulation = new JButton("Reset Simulation");
+        ResetSimulation = new JButton("Reset Simulation.Simulation");
         ResetSimulation.setPreferredSize(new Dimension(200,30));
         ResetSimulation.setMaximumSize(new Dimension(200,40));
         ResetSimulation.setAlignmentX(0.5f);
@@ -138,8 +138,13 @@ public class EpidemicWindow extends JFrame {
         }
     }
 
-    public void ShowEndSimulation(String title){
-        JOptionPane.showMessageDialog(SimulationEnd,"The economy collapsed.","Economy Collapse",JOptionPane.ERROR_MESSAGE);
+    public void ShowEndSimulation(SimulationInfo.Outcomes outcome){
+        if (outcome== Outcomes.ECONOMY_COLLAPSE)
+            JOptionPane.showMessageDialog(SimulationEnd,"The economy collapsed.","Economy Collapse",JOptionPane.ERROR_MESSAGE);
+        else if(outcome == Outcomes.ERADICATED)
+            JOptionPane.showMessageDialog(SimulationEnd,"The virus was successfully eradicated.","We saved the day",JOptionPane.INFORMATION_MESSAGE);
+        else if(outcome == Outcomes.POPULATION_DEAD)
+            JOptionPane.showMessageDialog(SimulationEnd,"The whole population is dead.","Population is dead",JOptionPane.ERROR_MESSAGE);
     }
 
     public void Update(){

@@ -1,3 +1,5 @@
+package SimulationInfo;
+
 public enum HealthState {
     GREEN, //Sane person. Can move, state can be either
     YELLOW, //Asyntomatic, but contagious. Can move, state can be either

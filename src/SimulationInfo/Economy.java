@@ -1,3 +1,4 @@
+package SimulationInfo;
 
 //Handles all the economy related tasks.
 public class Economy {
@@ -17,6 +18,5 @@ public class Economy {
         Resources -= (float)pop.Components.stream().parallel().filter((x)->x.CurrentState == State.STILL && x.Health != HealthState.RED && x.Health != HealthState.BLACK).count();
         Resources -= (float)pop.Components.stream().parallel().filter((x)->x.CurrentState == State.STILL && x.Health == HealthState.RED).count()*SwabCost*3;
         //Every moving person produces 1 unit back to the economy resources
-        //Resources += (float)pop.Components.stream().parallel().filter((x)->x.CurrentState == State.MOVING).count();
     }
 }

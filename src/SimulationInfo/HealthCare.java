@@ -1,3 +1,5 @@
+package SimulationInfo;
+
 public class HealthCare {
     //The probability, always greater than 0, that a sane individual gets infected by meeting a contagiouss person. Green->Yellow
     public static float Infectivity = 50;

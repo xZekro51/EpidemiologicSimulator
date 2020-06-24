@@ -1,11 +1,10 @@
 import Form.EpidemicWindow;
+import SimulationInfo.Outcomes;
+import SimulationInfo.Simulation;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.ImageObserver;
-import java.text.AttributedCharacterIterator;
 
 public class EpidemicSimulation {
 
@@ -33,7 +32,18 @@ public class EpidemicSimulation {
             public void actionPerformed(ActionEvent e) {
                 sim.RunOneDaySimulation();
                 if(sim.Economy.Resources<=0){
-                    window.ShowEndSimulation("The economy collapsed.");
+                    window.ShowEndSimulation(Outcomes.ECONOMY_COLLAPSE);
+                    ((Timer)e.getSource()).stop();
+                    sim.Running=false;
+                }
+                //All the persons are dead
+                else if(sim.Population.dead() == sim.PopSize){
+                    window.ShowEndSimulation(Outcomes.POPULATION_DEAD);
+                    ((Timer)e.getSource()).stop();
+                    sim.Running=false;
+                }
+                else if(!sim.Population.anyRed() && sim.Population.sick() == 0){
+                    window.ShowEndSimulation(Outcomes.ERADICATED);
                     ((Timer)e.getSource()).stop();
                     sim.Running=false;
                 }
@@ -45,13 +55,13 @@ public class EpidemicSimulation {
                 if(!sim.Running) {
                     sim.Running = true;
                     //Setting the text to the opposite needed
-                    window.RunSimulation.setText("Stop Simulation");
+                    window.RunSimulation.setText("Stop Simulation.Simulation");
                     simulation.start();
                 }
                 else {
                     sim.Running = false;
                     //Setting the text to the opposite needed
-                    window.RunSimulation.setText("Run Simulation");
+                    window.RunSimulation.setText("Run Simulation.Simulation");
                     simulation.stop();
                 }
             }
@@ -61,7 +71,7 @@ public class EpidemicSimulation {
             public void actionPerformed(ActionEvent e) {
                 if(sim.Running) {
                     sim.Running = false;
-                    window.RunSimulation.setText("Run Simulation");
+                    window.RunSimulation.setText("Run Simulation.Simulation");
                     simulation.stop();
                 }
                 sim.ResetSimulation();
@@ -83,7 +93,7 @@ public class EpidemicSimulation {
                 window.UpdateBar(window.AliveBar,sim.PopSize,sim.alive(),"Alive: ");
                 window.UpdateBar(window.ResourcesBar,(int)sim.Resources,(int)sim.currentResources(),"Resources: ");
                 if(sim!=null && sim.Running) {
-                    //window.UpdateSimulationValues(String.format("<html>Red: %d<br/>Yellow: %d<br/></html>", 3, sim.Population.asymptomatic()));
+                    //window.UpdateSimulationValues(String.format("<html>Red: %d<br/>Yellow: %d<br/></html>", 3, sim.Simulation.Population.asymptomatic()));
                 }
                 window.UpdateValid(ValidInput(window));
                 UpdateSimulation(sim);
@@ -104,7 +114,7 @@ public class EpidemicSimulation {
             Duration = Integer.parseInt(window.DurationField.Value().toString());
             V = Float.parseFloat(window.VField.Value().toString());
 
-            String population = "Current Population: "+String.valueOf(PopulationSize) + " | ";
+            String population = "Current Simulation.Population: "+String.valueOf(PopulationSize) + " | ";
             String resources = "Current Resources: "+String.valueOf(Resources) + " | ";
             String swabcost = "Current Swab Cost: "+String.valueOf(SwabCost) + " | ";
             String infectivity = "Infectivity: "+String.valueOf(Infectivity) + " | ";
