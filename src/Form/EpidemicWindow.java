@@ -75,7 +75,7 @@ public class EpidemicWindow extends JFrame {
         SymptomaticChanceField = new LabelField("Symptomatic Chance: ",new JSpinner(new SpinnerNumberModel(20,0,100,0.1)));
         LethalityField = new LabelField("Lethality: ",new JSpinner(new SpinnerNumberModel(5,0,100,0.1)));
         DurationField = new LabelField("Duration: ", new JSpinner(new SpinnerNumberModel(45,0,Integer.MAX_VALUE,1)));
-        VField = new LabelField("Encounter Rate (Vd): ", new JSpinner(new SpinnerNumberModel(1,0,100,0.1)));
+        VField = new LabelField("Encounter Rate (V): ", new JSpinner(new SpinnerNumberModel(1,0,100,0.1)));
         //Using reflection to handle the combobox dynamically
         ArrayList<String> strategies = new ArrayList<>();
         Reflections ref = new Reflections("SimulationInfo.Strategies");
