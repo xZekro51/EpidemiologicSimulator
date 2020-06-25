@@ -48,7 +48,7 @@ Le simulazioni sono state effettuate con i dati elencati di seguito.
 Da questa tabella si può notare come noonostante la strategia dell'**Heavy Social Distancing** sia quella più vessante a livello
 economico, è anche la migliore in quanto quella che genera meno morti.
 
-##Considerazioni
+## Considerazioni
 Come visto dalle simulazioni, il simulatore non è adatto per effettuare stime realistiche, in quanto basato su un modello che prende
 in considerazione solo alcuni fattori. Nonostante ciò si può comunque vedere, seppur sommariamente, come alcune strategie siano più efficaci di altre oppure
 le falle di logica in alcune strategie.
