@@ -2,7 +2,7 @@ package Form;
 
 import javax.swing.*;
 import java.awt.*;
-
+//An helper class that adds a label near a JComponent
 public class LabelField extends JPanel {
 
     public JComponent Component;

@@ -1,5 +1,7 @@
 package SimulationInfo;
 
+import SimulationInfo.Strategies.NoActionGovernment;
+
 public class Simulation {
 
     public boolean Running = false;
@@ -7,7 +9,9 @@ public class Simulation {
     public int ElapsedDays = 0;
     public Population Population;
     public Economy Economy;
-    public static HealthCare HealthCareInstance;
+    public HealthCare HealthCareInstance;
+
+    public StrategyListener EventStrategy = new StrategyListener();
 
     public int PopSize;
     public int Resources;
@@ -17,8 +21,12 @@ public class Simulation {
     public double SymptChance;
     public int Duration;
     public float V;
+    public float R0=0;
+    public Strategy Strategy;
+    public Class StrategyClass;
 
-    public float Vd;
+
+    public boolean FirstRedFound;
 
     public Thread MainThread;
     public Thread ContagionThread;
@@ -31,7 +39,17 @@ public class Simulation {
             Economy = new Economy(Resources);
             Economy.SwabCost = (int)SwabCost;
         }
-        System.out.println(String.format("%d %d",Population.Size,Economy.Resources));
+        if (EventStrategy.Cleared && StrategyClass != null){
+            try {
+                Strategy = (Strategy) StrategyClass.newInstance();
+            }catch(Exception e){}
+
+        }
+
+        if (Strategy!=null && EventStrategy.Cleared) {
+            Strategy.Subscribe(EventStrategy);
+            EventStrategy.Cleared = false;
+        }
         if (Population.Size == 0 || Economy.Resources == 0)
             return;
         RanOnce = true;
@@ -40,21 +58,47 @@ public class Simulation {
         if (ElapsedDays == 0)
             Population.InitializePopulation();
 
-        float vd = (V/Population.Size) * Population.moving();
-        System.out.println("Current Vd is " + String.valueOf(vd));
+        if (Population.anyRed() && !FirstRedFound)
+            FirstRedFound = true;
+        System.out.println("First red found? "+String.valueOf(FirstRedFound));
+        if (FirstRedFound)
+            EventStrategy.OnBeforeContagion.ApplyStrategy(Population,Economy,HealthCareInstance);
+
+        float vd = Population.moving()/(float)Population.Size;//(V/Population.Size) * Population.moving();
         //Simulation.Population.SimulateContagion(vd,Infectivity);
         int curEnc = Population.Components.get(0).Encounters.size();
-        Population.Components.stream().parallel().forEach((x)->Population.SimulateContagion(curEnc,x,vd,Infectivity));
-        //Simulation.Population.UpdatePopulationHealthState(SymptChance,Lethality);
-        Population.Components.stream().parallel().forEach((x)->Population.UpdatePopulationHealthState(x,SymptChance,Lethality));
-        Economy.UpdateResources(Population);
-        ElapsedDays++;
+        try {
+            Population.Components.parallelStream().parallel().forEach((x) -> Population.SimulateContagion(curEnc, x, V, Infectivity));
+        }
+        catch(ArrayIndexOutOfBoundsException e){}
 
-        System.out.println(String.format("Simulation.Simulation for day %s finalized.",String.valueOf(ElapsedDays)));
+        if (FirstRedFound)
+            EventStrategy.OnAfterContagion.ApplyStrategy(Population,Economy,HealthCareInstance);
+        //Simulation.Population.UpdatePopulationHealthState(SymptChance,Lethality);
+        try{
+            Population.Components.parallelStream().parallel().forEach((x)->x.UpdatePopulationHealthState(SymptChance,Lethality));
+        }
+        catch(ArrayIndexOutOfBoundsException e){}
+
+        if (FirstRedFound)
+            EventStrategy.OnAfterHealthUpdate.ApplyStrategy(Population,Economy,HealthCareInstance);
+        Economy.UpdateResources(Population);
+        if (FirstRedFound)
+            EventStrategy.OnAfterResourceUpdate.ApplyStrategy(Population,Economy,HealthCareInstance);
+        ElapsedDays++;
+        if (FirstRedFound)
+            EventStrategy.OnDayEnd.ApplyStrategy(Population,Economy,HealthCareInstance);
+
+        R0=(float)(vd*Duration/10.0*Infectivity/(float)100);
+
+        System.out.println(String.format("Simulation for day %s finalized.",String.valueOf(ElapsedDays)));
         System.out.println("Is there any red? " + String.valueOf(Population.anyRed()));
+        System.out.println("Sick overall (not dead): "+ String.valueOf(Population.sick()));
         System.out.println("Asymptomatic: " + String.valueOf(Population.asymptomatic()));
         System.out.println("Dead Count: " + String.valueOf(Population.dead()));
         System.out.println("Recovered Count: " + String.valueOf(Population.recovered()));
+        System.out.println("Current Vd is " + String.valueOf(vd));
+        System.out.println("Current R0 is " + String.valueOf(Math.round(R0)));
     }
 
     public int alive(){
@@ -76,6 +120,8 @@ public class Simulation {
         Economy = new Economy(Resources);
         Economy.SwabCost = (int)SwabCost;
         ElapsedDays = 0;
+        EventStrategy.Clear();
+        FirstRedFound = false;
     }
 
     public void UpdateSimulationValues(){
@@ -89,7 +135,11 @@ public class Simulation {
                 Economy.Resources = Resources;
                 Economy.SwabCost = (int)SwabCost;
             }
-
+            if (Strategy != null){
+                try {
+                    Strategy = (Strategy) StrategyClass.newInstance();
+                }catch(Exception e){}
+            }
         }
     }
 }
