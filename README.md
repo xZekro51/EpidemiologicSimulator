@@ -19,6 +19,10 @@ Il simulatore utilizza solo la libreria esterna `org.reflections`, reperibile al
 L'interfaccia grafica è stata sviluppata utilizzando Swing. E' stata aggiunta anche una helper class
 per aggiungere facilmente un label vicino ad un JComponent.
 
+## Progettazione
+Il simulatore è stato sviluppando seguendo il principio che ogni oggetto dovrebbe gestirsi autonomamente, ciò implica che ad esempio il metodo `Tampone()` 
+che controlla se un individuo è contagioso o meno, è dichiarata all'interno della classe `Person`.
+
 ## Strategie
 Le strategie sono state implementate dinamicamente. Per aggiungere una nuova strategia è necessario aggiungere una nuova
 classe che implementi l'interfaccia `Strategy` ed i metodi `ApplyStrategy` e `Subscribe`.
