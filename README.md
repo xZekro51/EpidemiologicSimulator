@@ -33,8 +33,9 @@ Questi sono:
   * OnAfterResourceUpdate
   * OnDayEnd
   
-Il simulatore implementa già 4 tipi di strategie, di seguito i dati medi su 10 simulazioni.
-Le simulazioni sono state effettuate con i dati elencati di seguito.
+Il simulatore implementa già 4 tipi di strategie.
+
+Di seguito si trovano elencati i parametri utilizzati, ed i valori medi su 10 simulazioni. 
 
 `P = 10000, C = 5, R = 450000, I = 70, S = 20, L = 10, D = 45, V = 2`
 
