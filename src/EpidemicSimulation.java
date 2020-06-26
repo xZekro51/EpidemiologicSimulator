@@ -154,9 +154,7 @@ public class EpidemicSimulation {
             return true;
         }
         catch(Exception e){
-            System.out.println("not valid input" + " " + window.ResourceField.Value().toString());
-            System.out.println("not valid input" + " " + window.PopulationField.Value().toString());
-            System.out.println("not valid input" + " " + window.SwabCostField.Value().toString());
+            System.out.println("not valid input");
             return false;
         }
     }
@@ -176,8 +174,5 @@ public class EpidemicSimulation {
         HealthCare.Duration = Duration;
         HealthCare.SymptomaticChance = (float)SymptChance;
         HealthCare.Lethality = (float)Lethality;
-
-
-
     }
 }
