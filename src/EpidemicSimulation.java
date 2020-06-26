@@ -116,8 +116,8 @@ public class EpidemicSimulation {
                 window.UpdateBar(window.AliveBar,sim.PopSize,sim.alive(),"Alive: ");
                 window.UpdateBar(window.ResourcesBar,(int)sim.Resources,(int)sim.currentResources(),"Resources: ");
                 if(sim.Running && (sim.Population != null)) {
-                    window.UpdateSimulationValues(String.format("<html>Red: %d<br/>Yellow: %d<br/>Sick: %d<br/>Recovered: %d<br/>" +
-                                    "<br/>Still: %d<br/>Moving: %d</html>", sim.Population.red(),
+                    window.UpdateSimulationValues(String.format("<html>Day %d<br/><br/>Red: %d<br/>Yellow: %d<br/>Sick: %d<br/>Recovered: %d<br/>" +
+                                    "<br/>Still: %d<br/>Moving: %d</html>", sim.ElapsedDays, sim.Population.red(),
                             sim.Population.asymptomatic(),sim.Population.sick(),sim.Population.recovered(),sim.Population.still(),sim.Population.moving()) + String.valueOf(sim.Population.sick()));
                 }
                 window.UpdateValid(ValidInput(window));
