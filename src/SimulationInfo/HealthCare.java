@@ -5,7 +5,7 @@ public class HealthCare {
     public static float Infectivity = 50;
 
     //The chance an infected people starts showing symptoms. Yellow->Red
-    public static float SimptomatycChance = 30;
+    public static float SymptomaticChance = 30;
 
     //The chance an infected syntomatic dies. Red->Black
     public static float Lethality = 30;

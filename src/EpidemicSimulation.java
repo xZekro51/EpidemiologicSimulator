@@ -117,8 +117,8 @@ public class EpidemicSimulation {
                 window.UpdateBar(window.ResourcesBar,(int)sim.Resources,(int)sim.currentResources(),"Resources: ");
                 if(sim.Running && (sim.Population != null)) {
                     window.UpdateSimulationValues(String.format("<html>Red: %d<br/>Yellow: %d<br/>Sick: %d<br/>Recovered: %d<br/>" +
-                                    "<br/>Still: %d<br/>Moving: %d<br/>R0: %f</html>", sim.Population.red(),
-                            sim.Population.asymptomatic(),sim.Population.sick(),sim.Population.recovered(),sim.Population.still(),sim.Population.moving(),sim.R0) + String.valueOf(sim.Population.sick()));
+                                    "<br/>Still: %d<br/>Moving: %d</html>", sim.Population.red(),
+                            sim.Population.asymptomatic(),sim.Population.sick(),sim.Population.recovered(),sim.Population.still(),sim.Population.moving()) + String.valueOf(sim.Population.sick()));
                 }
                 window.UpdateValid(ValidInput(window));
                 UpdateSimulation(sim);
@@ -171,5 +171,13 @@ public class EpidemicSimulation {
         sim.SymptChance = SymptChance;
         sim.V = V;
         sim.StrategyClass = ChosenStrategy;
+
+        HealthCare.Infectivity = (float)Infectivity;
+        HealthCare.Duration = Duration;
+        HealthCare.SymptomaticChance = (float)SymptChance;
+        HealthCare.Lethality = (float)Lethality;
+
+
+
     }
 }
